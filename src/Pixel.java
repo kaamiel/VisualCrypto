@@ -4,7 +4,7 @@ import java.util.Random;
 
 public enum Pixel {
 
-    // colors: upper left, upper right, bottom left, bottom roght
+    // colors: upper left, upper right, bottom left, bottom right
     A1(new Color[]{Color.WHITE, Color.BLACK, Color.WHITE, Color.BLACK}),
     A2(new Color[]{Color.BLACK, Color.WHITE, Color.BLACK, Color.WHITE}),
     B1(new Color[]{Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE}),
@@ -22,24 +22,6 @@ public enum Pixel {
     public Color[] getColors() {
         return this.colors;
     }
-
-//    private static boolean equalPixel(Pixel pixel, BufferedImage image, int x, int y) {
-//        return image.getWidth() > x + 1 && image.getHeight() > y + 1
-//                && image.getRGB(x, y) == pixel.colors[0].getRGB()
-//                && image.getRGB(x + 1, y) == pixel.colors[1].getRGB()
-//                && image.getRGB(x, y + 1) == pixel.colors[2].getRGB()
-//                && image.getRGB(x + 1, y + 1) == pixel.colors[3].getRGB();
-//    }
-
-//    public static Pixel createPixel(BufferedImage image, int x, int y) {
-//        for (Pixel pixel : Pixel.values()) {
-//            if (equalPixel(pixel, image, x, y)) {
-//                return pixel;
-//            }
-//        }
-//
-//        return null;
-//    }
 
     public static Pixel invert(Pixel pixel) {
         switch (pixel) {

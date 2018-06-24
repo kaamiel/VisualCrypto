@@ -19,7 +19,7 @@ public class Masker {
     }
 
     private static void setPixel(BufferedImage image, int x, int y, Pixel pixel) {
-        if (image.getWidth() <= x + 1 || image.getHeight() <= y + 1) {
+        if (image.getWidth() <= x + 1 || image.getHeight() <= y + 1 || x < 0 || y < 0) {
             return;
         }
         image.setRGB(x, y, pixel.getColors()[0].getRGB());
@@ -31,6 +31,7 @@ public class Masker {
     private static void mask(String path) {
         BufferedImage image = null;
         String formatName = null;
+
         try {
             File file = new File(path);
             image = ImageIO.read(file);
@@ -38,12 +39,14 @@ public class Masker {
             ImageInputStream input = ImageIO.createImageInputStream(file);
             Iterator<ImageReader> iterator = ImageIO.getImageReaders(input);
             if (!iterator.hasNext()) {
-                System.err.println("No readers found!");
+                System.err.println("No readers found.");
+                input.close();
                 System.exit(1);
             }
 
             ImageReader reader = iterator.next();
             formatName = reader.getFormatName();
+
             input.close();
 
         } catch (IOException e) {
@@ -57,15 +60,15 @@ public class Masker {
 
         String fileName = Paths.get(path).getFileName().toString();
         int d = fileName.lastIndexOf(".");
-        if (d > 0 && d < fileName.length() - 1) {
+        if (0 < d && d < fileName.length() - 1) {
             fileName = fileName.substring(0, d);
         }
 
         BufferedImage layer1 = new BufferedImage(2 * width, 2 * height, image.getType());
         BufferedImage layer2 = new BufferedImage(2 * width, 2 * height, image.getType());
 
-        for (int x = 0; x < width; ++x) {
-            for (int y = 0; y < height; ++y) {
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
                 Pixel pixel = Pixel.randomPixel(random);
                 setPixel(layer1, 2 * x, 2 * y, pixel);
 
