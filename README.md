@@ -1,6 +1,6 @@
 # VisualCrypto
 
-Task is written in Polish.  
+Partly in Polish.  
 
 Zadanie domowe – kryptografia wizualna  
 
