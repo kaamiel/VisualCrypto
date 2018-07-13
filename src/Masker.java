@@ -29,25 +29,22 @@ public class Masker {
     }
 
     private static void mask(String path) {
+        File file = new File(path);
+
         BufferedImage image = null;
         String formatName = null;
 
-        try {
-            File file = new File(path);
+        try (ImageInputStream input = ImageIO.createImageInputStream(file)) {
             image = ImageIO.read(file);
 
-            ImageInputStream input = ImageIO.createImageInputStream(file);
             Iterator<ImageReader> iterator = ImageIO.getImageReaders(input);
             if (!iterator.hasNext()) {
                 System.err.println("No readers found.");
-                input.close();
                 System.exit(1);
             }
 
             ImageReader reader = iterator.next();
             formatName = reader.getFormatName();
-
-            input.close();
 
         } catch (IOException e) {
             System.err.println("File read error.");

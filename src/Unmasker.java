@@ -29,23 +29,20 @@ public class Unmasker {
         BufferedImage layer1 = null, layer2 = null;
         String formatName = null;
 
-        try {
-            File file1 = new File(path1);
-            File file2 = new File(path2);
+        File file1 = new File(path1);
+        File file2 = new File(path2);
+
+        try (ImageInputStream input1 = ImageIO.createImageInputStream(file1);
+             ImageInputStream input2 = ImageIO.createImageInputStream(file2)) {
 
             layer1 = ImageIO.read(file1);
             layer2 = ImageIO.read(file2);
-
-            ImageInputStream input1 = ImageIO.createImageInputStream(file1);
-            ImageInputStream input2 = ImageIO.createImageInputStream(file2);
 
             Iterator<ImageReader> iterator1 = ImageIO.getImageReaders(input1);
             Iterator<ImageReader> iterator2 = ImageIO.getImageReaders(input2);
 
             if (!iterator1.hasNext() || !iterator2.hasNext()) {
                 System.err.println("No readers found.");
-                input1.close();
-                input2.close();
                 System.exit(1);
             }
 
@@ -53,15 +50,11 @@ public class Unmasker {
             ImageReader reader2 = iterator2.next();
 
             formatName = reader1.getFormatName();
+
             if (!formatName.equals(reader2.getFormatName())) {
                 System.err.println("Wrong format.");
-                input1.close();
-                input2.close();
                 System.exit(2);
             }
-
-            input1.close();
-            input2.close();
 
         } catch (IOException e) {
             System.err.println("File read error.");
